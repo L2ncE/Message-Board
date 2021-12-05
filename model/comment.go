@@ -5,7 +5,7 @@ import "time"
 type Comment struct {
 	Id          int
 	PostId      int
-	Txt         string
-	Username    string
+	Context     string
+	Name        string
 	CommentTime time.Time
 }
