@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"message-board/api"
 	"message-board/dao"
 )
@@ -8,7 +9,9 @@ import (
 func main() {
 	err := dao.InitDB()
 	if err != nil {
-		return
+		fmt.Printf("init DB failed, err:%v\n", err)
+	} else {
+		fmt.Println("连接数据库成功!")
 	}
 	api.InitEngine()
 }
