@@ -4,9 +4,8 @@ import "time"
 
 type Post struct {
 	Id         int       `json:"id"`
-	CommentNum int       `json:"comment_num"`
 	Context    string    `json:"context"`
-	Name       string    `json:"username"`
+	Name       string    `json:"name"`
 	PostTime   time.Time `json:"post_time"`
 	UpdateTime time.Time `json:"update_time"`
 }
