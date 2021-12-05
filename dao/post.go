@@ -10,12 +10,12 @@ func InsertPost(post model.Post) error {
 func SelectPostById(postId int) (model.Post, error) {
 	var post model.Post
 
-	row := dB.QueryRow("SELECT id, Name, Context, PostTime, UpdateTime, CommentNum FROM post WHERE id = ? ", postId)
+	row := dB.QueryRow("SELECT id, Name, Context, PostTime, UpdateTime FROM post WHERE id = ? ", postId)
 	if row.Err() != nil {
 		return post, row.Err()
 	}
 
-	err := row.Scan(&post.Id, &post.Name, &post.Context, &post.PostTime, &post.UpdateTime, &post.CommentNum)
+	err := row.Scan(&post.Id, &post.Name, &post.Context, &post.PostTime, &post.UpdateTime)
 	if err != nil {
 		return post, err
 	}
@@ -25,7 +25,7 @@ func SelectPostById(postId int) (model.Post, error) {
 
 func SelectPosts() ([]model.Post, error) {
 	var posts []model.Post
-	rows, err := dB.Query("SELECT id, Name, Context, PostTime, UpdateTime, CommentNum FROM post")
+	rows, err := dB.Query("SELECT id, Name, Context, PostTime, UpdateTime FROM post")
 	if err != nil {
 		return nil, err
 	}
@@ -34,7 +34,7 @@ func SelectPosts() ([]model.Post, error) {
 	for rows.Next() {
 		var post model.Post
 
-		err = rows.Scan(&post.Id, &post.Name, &post.Context, &post.PostTime, &post.UpdateTime, &post.CommentNum)
+		err = rows.Scan(&post.Id, &post.Name, &post.Context, &post.PostTime, &post.UpdateTime)
 		if err != nil {
 			return nil, err
 		}
