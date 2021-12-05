@@ -2,7 +2,7 @@ package model
 
 type User struct {
 	Id       int
-	Username string
+	Name     string
 	Password string
 	Question string
 	Answer   string
