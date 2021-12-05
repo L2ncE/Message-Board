@@ -33,20 +33,14 @@ func SelectUserByUsername(Name string) (model.User, error) {
 	return user, nil
 }
 
-//insert 插入数据
-func insert(Name string, Password string, Question string, Answer string) {
+// Insert 插入数据
+func Insert(user model.User) error {
 
 	sqlStr := "insert into user(name,password,question,answer)values (?,?,?,?)"
-	ret, err := dB.Exec(sqlStr, Name, Password, Question, Answer)
+	_, err := dB.Exec(sqlStr, user.Name, user.Password, user.Question, user.Answer)
 	if err != nil {
 		fmt.Printf("insert failed, err:%v\n", err)
-		return
+		return err
 	}
-	// 如果是插入数据的操作，能够拿到插入数据的id
-	id, err := ret.LastInsertId()
-	if err != nil {
-		fmt.Printf("get id failed,err:%v\n", err)
-		return
-	}
-	fmt.Println("id:", id)
+	return err
 }
