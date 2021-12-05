@@ -61,10 +61,14 @@ func login(ctx *gin.Context) {
 func register(ctx *gin.Context) {
 	username := ctx.PostForm("username")
 	password := ctx.PostForm("password")
+	question := ctx.PostForm("question")
+	answer := ctx.PostForm("answer")
 
 	user := model.User{
 		Name:     username,
 		Password: password,
+		Question: question,
+		Answer:   answer,
 	}
 
 	flag, err := service.IsRepeatUsername(username)
