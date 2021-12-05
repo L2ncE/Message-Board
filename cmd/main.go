@@ -6,6 +6,9 @@ import (
 )
 
 func main() {
-	dao.InitDB()
+	err := dao.InitDB()
+	if err != nil {
+		return
+	}
 	api.InitEngine()
 }
