@@ -58,7 +58,7 @@ func briefPosts(ctx *gin.Context) {
 }
 
 func addPost(ctx *gin.Context) {
-	iUsername, _ := ctx.Get("name")
+	iUsername, _ := ctx.Get("username")
 	name := iUsername.(string)
 
 	context := ctx.PostForm("context")
