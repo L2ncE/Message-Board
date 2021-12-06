@@ -10,8 +10,8 @@ func AddPost(post model.Post) error {
 	return err
 }
 
-func DeletePost(id string) error {
-	err := dao.DeletePost(id)
+func DeletePost(postId int) error {
+	err := dao.DeletePost(postId)
 	return err
 }
 
