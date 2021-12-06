@@ -83,16 +83,22 @@ func addPost(ctx *gin.Context) {
 func deletePost(ctx *gin.Context) {
 	postIdString := ctx.Param("post_id")
 	postId, err := strconv.Atoi(postIdString)
-	if err != nil {
-		fmt.Println("post id string to int err: ", err)
-		tool.RespErrorWithDate(ctx, "post_id格式有误")
-		return
-	}
-	err = service.DeletePost(postId)
-	if err != nil {
-		fmt.Println("delete post err: ", err)
+	postNameString, _ := ctx.Get("username")
+	nameString, _ := service.GetNameById(postId)
+	if postNameString == nameString {
+		if err != nil {
+			fmt.Println("post id string to int err: ", err)
+			tool.RespErrorWithDate(ctx, "post_id格式有误")
+			return
+		}
+		err = service.DeletePost(postId)
+		if err != nil {
+			fmt.Println("delete post err: ", err)
+			tool.RespInternalError(ctx)
+			return
+		}
+		tool.RespSuccessful(ctx)
+	} else {
 		tool.RespInternalError(ctx)
-		return
 	}
-	tool.RespSuccessful(ctx)
 }
