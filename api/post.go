@@ -79,3 +79,13 @@ func addPost(ctx *gin.Context) {
 
 	tool.RespSuccessful(ctx)
 }
+
+func deletePost(ctx *gin.Context) {
+	postIdString := ctx.Param("post_id")
+	err := service.DeletePost(postIdString)
+	if err != nil {
+		fmt.Println("delete post err: ", err)
+		tool.RespInternalError(ctx)
+		return
+	}
+}
