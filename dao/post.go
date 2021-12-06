@@ -1,6 +1,9 @@
 package dao
 
-import "message-board/model"
+import (
+	"fmt"
+	"message-board/model"
+)
 
 func InsertPost(post model.Post) error {
 	_, err := dB.Exec("INSERT INTO post(Name, Context, PostTime, UpdateTime) "+"values(?, ?, ?, ?);", post.Name, post.Context, post.PostTime, post.UpdateTime)
@@ -43,4 +46,14 @@ func SelectPosts() ([]model.Post, error) {
 	}
 
 	return posts, nil
+}
+
+func DeletePost(id string) error {
+	sqlStr := `delete from post where Id=?`
+	_, err := dB.Exec(sqlStr, id)
+	if err != nil {
+		fmt.Printf("delete failed,err:%v\n", err)
+		return err
+	}
+	return err
 }
