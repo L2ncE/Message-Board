@@ -10,6 +10,11 @@ func AddPost(post model.Post) error {
 	return err
 }
 
+func DeletePost(id string) error {
+	err := dao.DeletePost(id)
+	return err
+}
+
 func GetPosts() ([]model.Post, error) {
 	return dao.SelectPosts()
 }
