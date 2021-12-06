@@ -22,3 +22,7 @@ func GetPosts() ([]model.Post, error) {
 func GetPostById(postId int) (model.Post, error) {
 	return dao.SelectPostById(postId)
 }
+
+func GetNameById(postId int) (string, error) {
+	return dao.SelectNameById(postId)
+}
