@@ -25,6 +25,21 @@ func SelectPostById(postId int) (model.Post, error) {
 
 	return post, nil
 }
+func SelectNameById(postId int) (string, error) {
+	var post model.Post
+
+	row := dB.QueryRow("SELECT Name FROM post WHERE id = ? ", postId)
+	if row.Err() != nil {
+		return post.Name, row.Err()
+	}
+
+	err := row.Scan(&post.Name)
+	if err != nil {
+		return post.Name, err
+	}
+
+	return post.Name, nil
+}
 
 func SelectPosts() ([]model.Post, error) {
 	var posts []model.Post
@@ -49,6 +64,7 @@ func SelectPosts() ([]model.Post, error) {
 }
 
 func DeletePost(postId int) error {
+
 	sqlStr := `delete from post where Id=?`
 	_, err := dB.Exec(sqlStr, postId)
 	if err != nil {
