@@ -48,9 +48,9 @@ func SelectPosts() ([]model.Post, error) {
 	return posts, nil
 }
 
-func DeletePost(id string) error {
+func DeletePost(postId int) error {
 	sqlStr := `delete from post where Id=?`
-	_, err := dB.Exec(sqlStr, id)
+	_, err := dB.Exec(sqlStr, postId)
 	if err != nil {
 		fmt.Printf("delete failed,err:%v\n", err)
 		return err
