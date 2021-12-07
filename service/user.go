@@ -46,3 +46,8 @@ func Register(user model.User) error {
 	err := dao.Insert(user)
 	return err
 }
+
+func SelectAnswerByUsername(username string) string {
+	answer := dao.SelectAnswerByUsername(username)
+	return answer
+}

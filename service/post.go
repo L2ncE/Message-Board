@@ -3,6 +3,7 @@ package service
 import (
 	"message-board/dao"
 	"message-board/model"
+	"time"
 )
 
 func AddPost(post model.Post) error {
@@ -25,4 +26,9 @@ func GetPostById(postId int) (model.Post, error) {
 
 func GetNameById(postId int) (string, error) {
 	return dao.SelectNameById(postId)
+}
+
+func ChangePost(id int, context string, UpdateTime time.Time) error {
+	err := dao.ChangePost(id, context, UpdateTime)
+	return err
 }
