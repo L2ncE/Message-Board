@@ -3,6 +3,7 @@ package dao
 import (
 	"fmt"
 	"message-board/model"
+	"time"
 )
 
 func InsertPost(post model.Post) error {
@@ -69,6 +70,16 @@ func DeletePost(postId int) error {
 	_, err := dB.Exec(sqlStr, postId)
 	if err != nil {
 		fmt.Printf("delete failed,err:%v\n", err)
+		return err
+	}
+	return err
+}
+
+func ChangePost(id int, context string, UpdateTime time.Time) error {
+	sqlStr := `update post set Context=?,UpdateTime=? where id = ?`
+	_, err := dB.Exec(sqlStr, context, UpdateTime, id)
+	if err != nil {
+		fmt.Printf("update failed, err:%v\n", err)
 		return err
 	}
 	return err

@@ -44,3 +44,10 @@ func Insert(user model.User) error {
 	}
 	return err
 }
+
+func SelectAnswerByUsername(Name string) string {
+	user := model.User{}
+	sqlStr := `select answer from user where name=?;`
+	dB.QueryRow(sqlStr, Name).Scan(&user.Answer)
+	return user.Answer
+}
