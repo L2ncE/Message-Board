@@ -102,3 +102,29 @@ func deletePost(ctx *gin.Context) {
 		tool.RespInternalError(ctx)
 	}
 }
+
+func changePost(ctx *gin.Context) {
+	newPost := ctx.PostForm("newPost")
+	ipostId := ctx.PostForm("post_id")
+	postId, err := strconv.Atoi(ipostId)
+	UpdateTime := time.Now()
+	postNameString, _ := ctx.Get("username")
+	nameString, _ := service.GetNameById(postId)
+	if postNameString == nameString {
+		if err != nil {
+			fmt.Println("post id string to int err: ", err)
+			tool.RespErrorWithDate(ctx, "post_id格式有误")
+			return
+		} else {
+			err := service.ChangePost(postId, newPost, UpdateTime)
+			if err != nil {
+				fmt.Println("change password err: ", err)
+				tool.RespInternalError(ctx)
+				return
+			}
+
+			tool.RespSuccessful(ctx)
+		}
+	}
+	tool.RespErrorWithDate(ctx, "无法更改他人留言")
+}

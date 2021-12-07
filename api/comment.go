@@ -11,7 +11,7 @@ import (
 )
 
 func addComment(ctx *gin.Context) {
-	iUsername, _ := ctx.Get("name")
+	iUsername, _ := ctx.Get("username")
 	Name := iUsername.(string)
 
 	context := ctx.PostForm("context")
@@ -37,4 +37,27 @@ func addComment(ctx *gin.Context) {
 	}
 
 	tool.RespSuccessful(ctx)
+}
+
+func deleteComment(ctx *gin.Context) {
+	commentIdString := ctx.Param("comment_id")
+	commentId, err := strconv.Atoi(commentIdString)
+	commentNameString, _ := ctx.Get("username")
+	nameString, _ := service.GetNameById2(commentId)
+	if commentNameString == nameString {
+		if err != nil {
+			fmt.Println("comment id string to int err: ", err)
+			tool.RespErrorWithDate(ctx, "comment_id格式有误")
+			return
+		}
+		err = service.DeleteComment(commentId)
+		if err != nil {
+			fmt.Println("delete comment err: ", err)
+			tool.RespInternalError(ctx)
+			return
+		}
+		tool.RespSuccessful(ctx)
+	} else {
+		tool.RespInternalError(ctx)
+	}
 }
