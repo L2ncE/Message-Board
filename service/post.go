@@ -32,3 +32,8 @@ func ChangePost(id int, context string, UpdateTime time.Time) error {
 	err := dao.ChangePost(id, context, UpdateTime)
 	return err
 }
+
+func PostLikes(postId int) error {
+	err := dao.PostLikes(postId)
+	return err
+}
