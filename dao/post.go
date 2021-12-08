@@ -84,3 +84,13 @@ func ChangePost(id int, context string, UpdateTime time.Time) error {
 	}
 	return err
 }
+
+func PostLikes(id int) error {
+	sqlStr := `update post set Likes=Likes+1 where id = ?`
+	_, err := dB.Exec(sqlStr, id)
+	if err != nil {
+		fmt.Printf("update failed, err:%v\n", err)
+		return err
+	}
+	return err
+}

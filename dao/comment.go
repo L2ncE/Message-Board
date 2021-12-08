@@ -65,3 +65,13 @@ func SelectNameById2(commentId int) (string, error) {
 
 	return comment.Name, nil
 }
+
+func CommentLikes(id int) error {
+	sqlStr := `update comment set Likes=Likes+1 where id = ?`
+	_, err := dB.Exec(sqlStr, id)
+	if err != nil {
+		fmt.Printf("update failed, err:%v\n", err)
+		return err
+	}
+	return err
+}
