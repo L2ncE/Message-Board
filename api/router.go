@@ -28,6 +28,8 @@ func InitEngine() {
 
 		engine.MaxMultipartMemory = 8 << 20
 		postGroup.POST("/file", uploadFile) ////上传文章功能
+
+		postGroup.POST("/:post_id/likes", postLikes)
 	}
 
 	commentGroup := engine.Group("/comment")
@@ -35,6 +37,8 @@ func InitEngine() {
 		commentGroup.Use(auth)
 		commentGroup.POST("/", addComment)                 //发送评论
 		commentGroup.DELETE("/:comment_id", deleteComment) //删除评论
+
+		commentGroup.POST("/:comment_id/likes", commentLikes)
 	}
 
 	err := engine.Run()
