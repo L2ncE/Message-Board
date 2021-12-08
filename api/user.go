@@ -12,66 +12,77 @@ func changePassword(ctx *gin.Context) {
 	oldPassword := ctx.PostForm("old_password")
 	newPassword := ctx.PostForm("new_password")
 	iUsername, _ := ctx.Get("username")
-	username := iUsername.(string)
+	l1 := len([]rune(newPassword))
+	if l1 <= 16 {
+		username := iUsername.(string)
 
-	//检验旧密码是否正确
-	flag, err := service.IsPasswordCorrect(username, oldPassword)
-	if err != nil {
-		fmt.Println("judge password correct err: ", err)
-		tool.RespInternalError(ctx)
+		//检验旧密码是否正确
+		flag, err := service.IsPasswordCorrect(username, oldPassword)
+		if err != nil {
+			fmt.Println("judge password correct err: ", err)
+			tool.RespInternalError(ctx)
+			return
+		}
+
+		if !flag {
+			tool.RespErrorWithDate(ctx, "旧密码错误")
+			return
+		}
+
+		//修改新密码
+		err = service.ChangePassword(username, newPassword)
+		if err != nil {
+			fmt.Println("change password err: ", err)
+			tool.RespInternalError(ctx)
+			return
+		}
+
+		tool.RespSuccessful(ctx)
+	} else {
+		tool.RespErrorWithDate(ctx, "密码请在16位之内")
 		return
 	}
-
-	if !flag {
-		tool.RespErrorWithDate(ctx, "旧密码错误")
-		return
-	}
-
-	//修改新密码
-	err = service.ChangePassword(username, newPassword)
-	if err != nil {
-		fmt.Println("change password err: ", err)
-		tool.RespInternalError(ctx)
-		return
-	}
-
-	tool.RespSuccessful(ctx)
 }
 
 func login(ctx *gin.Context) {
 	username := ctx.PostForm("username")
 	password := ctx.PostForm("password")
-
-	flag, err := service.IsPasswordCorrect(username, password)
-	if err != nil {
-		fmt.Println("judge password correct err: ", err)
-		tool.RespInternalError(ctx)
-		return
-	}
-
-	if !flag {
-		tool.RespErrorWithDate(ctx, "登陆失败,请输入密保")
-		answer := ctx.PostForm("answer")
-		if answer == service.SelectAnswerByUsername(username) {
-			ctx.JSON(200, gin.H{
-				"msg": "密保正确,请重新输入密码",
-			})
-			newPassword := ctx.PostForm("new_password")
-			err = service.ChangePassword(username, newPassword)
-			if err != nil {
-				fmt.Println("change password err: ", err)
-				tool.RespInternalError(ctx)
-				return
-			}
-		} else {
-			tool.RespErrorWithDate(ctx, "密保错误")
+	l1 := len([]rune(password))
+	if l1 <= 16 {
+		flag, err := service.IsPasswordCorrect(username, password)
+		if err != nil {
+			fmt.Println("judge password correct err: ", err)
+			tool.RespInternalError(ctx)
 			return
 		}
+
+		if !flag {
+			tool.RespErrorWithDate(ctx, "登陆失败,请输入密保")
+			answer := ctx.PostForm("answer")
+			if answer == service.SelectAnswerByUsername(username) {
+				ctx.JSON(200, gin.H{
+					"msg": "密保正确,请重新输入密码",
+				})
+				newPassword := ctx.PostForm("new_password")
+				err = service.ChangePassword(username, newPassword)
+				if err != nil {
+					fmt.Println("change password err: ", err)
+					tool.RespInternalError(ctx)
+					return
+				}
+			} else {
+				tool.RespErrorWithDate(ctx, "密保错误")
+				return
+			}
+			return
+		}
+
+		ctx.SetCookie("username", username, 600, "/", "", false, false)
+		tool.RespSuccessful(ctx)
+	} else {
+		tool.RespErrorWithDate(ctx, "密码请在16位之内")
 		return
 	}
-
-	ctx.SetCookie("username", username, 600, "/", "", false, false)
-	tool.RespSuccessful(ctx)
 }
 
 func register(ctx *gin.Context) {
