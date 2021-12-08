@@ -7,6 +7,7 @@ import (
 	"message-board/model"
 	"message-board/service"
 	"message-board/tool"
+	"net/http"
 	"strconv"
 	"time"
 )
@@ -127,4 +128,16 @@ func changePost(ctx *gin.Context) {
 		}
 	}
 	tool.RespErrorWithDate(ctx, "无法更改他人留言")
+}
+
+func uploadFile(ctx *gin.Context) {
+	file, err := ctx.FormFile("file")
+	if err != nil {
+		ctx.String(500, "上传文章出错")
+	}
+	err = ctx.SaveUploadedFile(file, file.Filename)
+	if err != nil {
+		return
+	}
+	ctx.String(http.StatusOK, file.Filename)
 }

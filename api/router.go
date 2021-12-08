@@ -1,6 +1,8 @@
 package api
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+)
 
 func InitEngine() {
 	engine := gin.Default()
@@ -23,6 +25,9 @@ func InitEngine() {
 
 		postGroup.GET("/", briefPosts)         //查看全部留言概略
 		postGroup.GET("/:post_id", postDetail) //查看一条留言详细信息和其下属评论
+
+		engine.MaxMultipartMemory = 8 << 20
+		postGroup.POST("/file", uploadFile) ////上传文章功能
 	}
 
 	commentGroup := engine.Group("/comment")
