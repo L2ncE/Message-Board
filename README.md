@@ -20,41 +20,50 @@
 
 - [ ] 实现评论区的套娃
 
-   
-
-  ##### 建表代码
+##### 建表代码
 
   ```mysql
-  CREATE TABLE `user` (
-      `Id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-      `Name` VARCHAR(20) DEFAULT '',
-      `Password` VARCHAR(20) DEFAULT '123456',
+  CREATE TABLE `user`
+  (
+      `Id`       BIGINT(20) NOT NULL AUTO_INCREMENT,
+      `Name`     VARCHAR(20)  DEFAULT '',
+      `Password` VARCHAR(20)  DEFAULT '123456',
       `Question` VARCHAR(255) DEFAULT NULL,
-      `Answer` VARCHAR(255) DEFAULT NULL,
-      PRIMARY KEY(`Id`)
-  )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+      `Answer`   VARCHAR(255) DEFAULT NULL,
+      PRIMARY KEY (`Id`)
+  ) ENGINE = InnoDB
+    AUTO_INCREMENT = 1
+    DEFAULT CHARSET = utf8mb4;
   ```
 
   ```mysql
-  CREATE TABLE `post` (
-                          `Id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-                          `Name` VARCHAR(20) DEFAULT '',
-                          `Context` VARCHAR(255) DEFAULT NULL,
-                          `PostTime` datetime DEFAULT NULL,
-                          `UpdateTime` datetime DEFAULT NULL,
-                          PRIMARY KEY(`Id`)
-  )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+  CREATE TABLE `post`
+  (
+      `Id`         BIGINT(20)             NOT NULL AUTO_INCREMENT,
+      `Name`       VARCHAR(20)  DEFAULT '',
+      `Context`    VARCHAR(255) DEFAULT NULL,
+      `PostTime`   datetime     DEFAULT NULL,
+      `UpdateTime` datetime     DEFAULT NULL,
+      `Likes`      bigint       default 0 null,
+      PRIMARY KEY (`Id`)
+  ) ENGINE = InnoDB
+    AUTO_INCREMENT = 1
+    DEFAULT CHARSET = utf8mb4;
   ```
 
   ```mysql
-  CREATE TABLE `Comment` (
-                          `Id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-                          `PostId` BIGINT(20) NOT NULL,
-                          `Name` VARCHAR(20) DEFAULT '',
-                          `Context` VARCHAR(255) DEFAULT NULL,
-                          `CommenTime` datetime DEFAULT NULL,
-                          PRIMARY KEY(`Id`)
-  )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+  CREATE TABLE `Comment`
+  (
+      `Id`         BIGINT(20)             NOT NULL AUTO_INCREMENT,
+      `PostId`     BIGINT(20)             NOT NULL,
+      `Name`       VARCHAR(20)  DEFAULT '',
+      `Context`    VARCHAR(255) DEFAULT NULL,
+      `CommenTime` datetime     DEFAULT NULL,
+      `Likes`      bigint       default 0 null,
+      PRIMARY KEY (`Id`)
+  ) ENGINE = InnoDB
+    AUTO_INCREMENT = 1
+    DEFAULT CHARSET = utf8mb4;
   ```
 
   
