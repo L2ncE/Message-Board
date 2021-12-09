@@ -39,6 +39,33 @@ func addComment(ctx *gin.Context) {
 	tool.RespSuccessful(ctx)
 }
 
+func addCommentAnonymity(ctx *gin.Context) {
+	Name := "Anonymity"
+	context := ctx.PostForm("context")
+	postIdString := ctx.PostForm("post_id")
+	postId, err := strconv.Atoi(postIdString)
+	if err != nil {
+		fmt.Println("post id string to int err: ", err)
+		tool.RespErrorWithDate(ctx, "文章id有误")
+		return
+	}
+
+	comment := model.Comment{
+		PostId:      postId,
+		Context:     context,
+		Name:        Name,
+		CommentTime: time.Now(),
+	}
+	err = service.AddComment(comment)
+	if err != nil {
+		fmt.Println("add comment err: ", err)
+		tool.RespInternalError(ctx)
+		return
+	}
+
+	tool.RespSuccessful(ctx)
+}
+
 func deleteComment(ctx *gin.Context) {
 	commentIdString := ctx.Param("comment_id")
 	commentId, err := strconv.Atoi(commentIdString)

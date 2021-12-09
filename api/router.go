@@ -34,12 +34,13 @@ func InitEngine() {
 		}
 		{
 			postGroup.Use(admin)
-			postGroup.DELETE("/:post_id0", deletePost0) //管理员删除,无视用户名
+			postGroup.DELETE("/:post_id/admin", deletePost0) //管理员删除,无视用户名
 		}
 	}
 
 	commentGroup := engine.Group("/comment")
 	{
+		commentGroup.POST("/anonymity", addCommentAnonymity) //匿名评论
 		{
 			commentGroup.Use(auth)
 			commentGroup.POST("/", addComment)                 //发送评论
@@ -49,7 +50,7 @@ func InitEngine() {
 		}
 		{
 			commentGroup.Use(admin)
-			commentGroup.DELETE("/:comment_id0", deleteComment0) //管理员删除,无视用户名
+			commentGroup.DELETE("/:comment_id/admin", deleteComment0) //管理员删除,无视用户名
 		}
 	}
 
