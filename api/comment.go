@@ -78,3 +78,20 @@ func commentLikes(ctx *gin.Context) {
 
 	tool.RespSuccessful(ctx)
 }
+
+func deleteComment0(ctx *gin.Context) {
+	commentIdString := ctx.Param("comment_id")
+	commentId, err := strconv.Atoi(commentIdString)
+	if err != nil {
+		fmt.Println("comment id string to int err: ", err)
+		tool.RespErrorWithDate(ctx, "comment_id格式有误")
+		return
+	}
+	err = service.DeleteComment(commentId)
+	if err != nil {
+		fmt.Println("delete comment err: ", err)
+		tool.RespInternalError(ctx)
+		return
+	}
+	tool.RespSuccessful(ctx)
+}

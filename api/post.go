@@ -158,3 +158,21 @@ func postLikes(ctx *gin.Context) {
 
 	tool.RespSuccessful(ctx)
 }
+
+func deletePost0(ctx *gin.Context) {
+	postIdString := ctx.Param("post_id")
+	postId, err := strconv.Atoi(postIdString)
+
+	if err != nil {
+		fmt.Println("post id string to int err: ", err)
+		tool.RespErrorWithDate(ctx, "post_id格式有误")
+		return
+	}
+	err = service.DeletePost(postId)
+	if err != nil {
+		fmt.Println("delete post err: ", err)
+		tool.RespInternalError(ctx)
+		return
+	}
+	tool.RespSuccessful(ctx)
+}
