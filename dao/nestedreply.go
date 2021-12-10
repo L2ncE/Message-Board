@@ -5,15 +5,29 @@ import (
 	"message-board/model"
 )
 
-// InsertNestedReply 进行回复,并可嵌套
-func InsertNestedReply(nestedreply model.NestedReply) error {
+// InsertReply 进行楼中楼回复
+func InsertReply(nestedReply model.NestedReply) error {
 	//网上查到的操作,能够在回复的同时保留之前的内容
 	//每次回复用"/"隔开
-	sqlStr := `insert into nestedreply(Name,CommentId,ReplyTime)values (?,?,?);update nestedreply set context=CONCAT_WS('/ ', context, ?) where CommentId = ? `
-	_, err := dB.Exec(sqlStr, nestedreply.Name, nestedreply.CommentId, nestedreply.ReplyTime, nestedreply.Context, nestedreply.CommentId)
+	sqlStr := `insert into nestedReply(Name,CommentId,ReplyTime,Context)values (?,?,?,?)`
+	_, err := dB.Exec(sqlStr, nestedReply.Name, nestedReply.CommentId, nestedReply.ReplyTime, nestedReply.Context)
 
 	if err != nil {
 		fmt.Printf("insert failed, err:%v\n", err)
+		return err
+	}
+	return err
+}
+
+// InsertNestedReply 嵌套
+func InsertNestedReply(nestedReply model.NestedReply) error {
+	//能够在回复的同时保留之前的内容
+	//每次回复用"/"隔开
+	sqlStr := `update nestedReply set context=CONCAT_WS('/ ', context, ?) where CommentId = ?`
+	_, err := dB.Exec(sqlStr, nestedReply.Context, nestedReply.CommentId)
+
+	if err != nil {
+		fmt.Printf("reply failed, err:%v\n", err)
 		return err
 	}
 	return err
