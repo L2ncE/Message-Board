@@ -1,4 +1,4 @@
- # Message-Board
+# Message-Board
 
 ### 在吴昊达学长留言板的基础下进行改动,并加入其他新功能
 
@@ -22,7 +22,7 @@
 
 - [x] 匿名评论功能
 
-- [ ] 实现评论区的套娃
+- [x] 实现评论区的套娃
 
 ##### 建表代码
 
@@ -70,4 +70,17 @@
     DEFAULT CHARSET = utf8mb4;
   ```
 
-  
+  ```mysql
+CREATE TABLE `NestedReply`
+(
+    `Id`        BIGINT(20)             NOT NULL AUTO_INCREMENT,
+    `CommentId` BIGINT(20)             NOT NULL,
+    `Name`      VARCHAR(20)  DEFAULT '',
+    `Context`   VARCHAR(255) DEFAULT NULL,
+    `ReplyTime` datetime     DEFAULT NULL,
+    `Likes`     bigint       default 0 null,
+    PRIMARY KEY (`Id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  DEFAULT CHARSET = utf8mb4;
+  ```
