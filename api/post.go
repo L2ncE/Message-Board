@@ -106,8 +106,8 @@ func deletePost(ctx *gin.Context) {
 
 func changePost(ctx *gin.Context) {
 	newPost := ctx.PostForm("newPost")
-	ipostId := ctx.PostForm("post_id")
-	postId, err := strconv.Atoi(ipostId)
+	iPostId := ctx.PostForm("post_id")
+	postId, err := strconv.Atoi(iPostId)
 	UpdateTime := time.Now()
 	postNameString, _ := ctx.Get("username")
 	nameString, _ := service.GetNameById(postId)
@@ -126,8 +126,9 @@ func changePost(ctx *gin.Context) {
 
 			tool.RespSuccessful(ctx)
 		}
+	} else {
+		tool.RespErrorWithDate(ctx, "无法更改他人留言")
 	}
-	tool.RespErrorWithDate(ctx, "无法更改他人留言")
 }
 
 func uploadFile(ctx *gin.Context) {
