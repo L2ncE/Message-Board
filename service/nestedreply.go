@@ -5,6 +5,12 @@ import (
 	"message-board/model"
 )
 
+// AddReply 楼中楼
+func AddReply(nestedReply model.NestedReply) error {
+	return dao.InsertReply(nestedReply)
+}
+
+// AddNestedReply 楼中楼嵌套
 func AddNestedReply(nestedReply model.NestedReply) error {
 	return dao.InsertNestedReply(nestedReply)
 }
