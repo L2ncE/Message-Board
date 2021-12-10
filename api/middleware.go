@@ -17,13 +17,17 @@ func auth(ctx *gin.Context) {
 }
 
 func admin(ctx *gin.Context) {
-	if cookie, err := ctx.Cookie("admin"); err == nil {
-		if cookie == "袁鑫浩" {
-			ctx.Next()
-		}
+	username, err := ctx.Cookie("username")
+	if err != nil {
+		tool.RespErrorWithDate(ctx, "游客你好！没有您的信息,请先登录!")
+		ctx.Abort()
 	}
-	// 返回错误
-	tool.RespErrorWithDate(ctx, "你好,你不是管理员")
-	ctx.Abort()
+	iUsername, _ := ctx.Get("username")
+	username = iUsername.(string)
+	if username != "袁鑫浩" {
+		tool.RespErrorWithDate(ctx, "你好,你不是管理员")
+		ctx.Abort()
+	}
+	ctx.Next()
 	return
 }
