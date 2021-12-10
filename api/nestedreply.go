@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-func addNestedReply(ctx *gin.Context) {
+func addReply(ctx *gin.Context) {
 	iUsername, _ := ctx.Get("username")
 	Name := iUsername.(string)
 
@@ -28,6 +28,30 @@ func addNestedReply(ctx *gin.Context) {
 		Context:   context,
 		Name:      Name,
 		ReplyTime: time.Now(),
+	}
+	err = service.AddReply(nestedReply)
+	if err != nil {
+		fmt.Println("add reply err: ", err)
+		tool.RespInternalError(ctx)
+		return
+	}
+
+	tool.RespSuccessful(ctx)
+}
+
+func addNestedReply(ctx *gin.Context) {
+	context := ctx.PostForm("context")
+	commentIdString := ctx.PostForm("comment_id")
+	commentId, err := strconv.Atoi(commentIdString)
+	if err != nil {
+		fmt.Println("comment id string to int err: ", err)
+		tool.RespErrorWithDate(ctx, "文章id有误")
+		return
+	}
+
+	nestedReply := model.NestedReply{
+		CommentId: commentId,
+		Context:   context,
 	}
 	err = service.AddNestedReply(nestedReply)
 	if err != nil {
