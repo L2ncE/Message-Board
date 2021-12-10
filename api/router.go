@@ -57,7 +57,8 @@ func InitEngine() {
 	nestedReplyGroup := engine.Group("/reply")
 	{
 		nestedReplyGroup.Use(auth)
-		nestedReplyGroup.POST("/", addNestedReply)                     //发送评论
+		nestedReplyGroup.POST("/", addReply)                           //发送楼中楼评论
+		nestedReplyGroup.POST("/", addNestedReply)                     //发送楼中楼套娃评论
 		nestedReplyGroup.DELETE("/:nestedReply_id", deleteNestedReply) //删除评论
 
 		nestedReplyGroup.POST("/:nestedReply_id/likes", nestedReplyLikes)
