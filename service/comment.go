@@ -13,8 +13,8 @@ func GetPostComments(postId int) ([]model.Comment, error) {
 	return dao.SelectCommentByPostId(postId)
 }
 
-func DeleteComment(postId int) error {
-	err := dao.DeleteComment(postId)
+func DeleteComment(Id int) error {
+	err := dao.DeleteComment(Id)
 	return err
 }
 
