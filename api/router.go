@@ -54,6 +54,19 @@ func InitEngine() {
 		}
 	}
 
+	nestedReplyGroup := engine.Group("/reply")
+	{
+		nestedReplyGroup.Use(auth)
+		nestedReplyGroup.POST("/", addNestedReply)                     //发送评论
+		nestedReplyGroup.DELETE("/:nestedReply_id", deleteNestedReply) //删除评论
+
+		nestedReplyGroup.POST("/:nestedReply_id/likes", nestedReplyLikes)
+	}
+	{
+		nestedReplyGroup.Use(admin)
+		nestedReplyGroup.DELETE("/:nestedReply_id/admin", deleteNestedReply0) //管理员删除,无视用户名
+	}
+
 	err := engine.Run()
 	if err != nil {
 		return
